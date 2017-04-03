@@ -1,0 +1,16 @@
+[local]
+# gandi.net API (Production) key
+apikey = XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+# domain
+domain = example.com
+
+# A-record name (@, dev, home, etc) that will be updated
+# example is for raspbian.example.com
+a_name = raspbian 
+
+# TTL (seconds)
+ttl = 900
+
+# Production API
+api = https://dns.beta.gandi.net/api/v5/
