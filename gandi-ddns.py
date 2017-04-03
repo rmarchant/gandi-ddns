@@ -83,7 +83,7 @@ def main():
     print("external IP is: %s" % external_ip)
 
     #Prepare record
-    payload = {'rrset_ttl': 900, 'rrset_values': [external_ip]}
+    payload = {'rrset_ttl': config.get(section, "ttl"), 'rrset_values': [external_ip]}
 
     #Check if record already exists. If not, add record. If it does, delete then add record.
     record = get_record(url, headers)
