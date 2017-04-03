@@ -69,39 +69,35 @@ def main():
     sys.exit("please fill in the 'config.txt' file")
 
   for section in config.sections():
-    print(config.get(section, "api"))
-    print(config.get(section, "domain"))
-    print(config.get(section, "a_name"))
-    print(config.get(section, "ttl"))
   
-  #Retrieve API key
-  apikey = config.get(section, "apikey")
+    #Retrieve API key
+    apikey = config.get(section, "apikey")
 
-  #Set headers
-  headers = { 'Content-Type': 'application/json', 'X-Api-Key': '%s' % config.get(section, "apikey")}
+    #Set headers
+    headers = { 'Content-Type': 'application/json', 'X-Api-Key': '%s' % config.get(section, "apikey")}
 
-  #Set URL
-  url = 'https://dns.beta.gandi.net/api/v5/domains/%s/records/%s/A' % (config.get(section, "domain"), config.get(section, "a_name"))
+    #Set URL
+    url = '%sdomains/%s/records/%s/A' % (config.get(section, "api"), config.get(section, "domain"), config.get(section, "a_name"))
+    print(url)
+    #Discover External IP
+    external_ip = get_ip()[0:-1]
+    print("external IP is: %s" % external_ip)
 
-  #Discover External IP
-  external_ip = get_ip()[0:-1]
-  print("external IP is: %s" % external_ip)
+    #Prepare record
+    payload = {'rrset_ttl': 900, 'rrset_values': [external_ip]}
 
-  #Prepare record
-  payload = {'rrset_ttl': 900, 'rrset_values': [external_ip]}
+    #Check if record already exists. If not, add record. If it does, delete then add record.
+    record = get_record(url, headers)
 
-  #Check if record already exists
-  record = get_record(url, headers)
-
-  if record.status_code == 404:
-    add_record(url, headers, payload)
-  elif record.status_code == 200:
-    print("current record is: %s" % json.loads(record.text)['rrset_values'][0])
-    if(json.loads(record.text)['rrset_values'][0] == external_ip):
-      print("no change in IP address")
-      sys.exit(2)
-    del_record(url, headers)
-    add_record(url, headers, payload)
+    if record.status_code == 404:
+      add_record(url, headers, payload)
+    elif record.status_code == 200:
+      print("current record is: %s" % json.loads(record.text)['rrset_values'][0])
+      if(json.loads(record.text)['rrset_values'][0] == external_ip):
+        print("no change in IP address")
+        sys.exit(2)
+      del_record(url, headers)
+      add_record(url, headers, payload)
 
 if __name__ == "__main__":
   main()
