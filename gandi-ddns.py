@@ -60,7 +60,6 @@ def del_record(url, headers):
 
 
 def main():
-  global api, zone_uuid
   path = config_file
   if not path.startswith('/'):
     path = os.path.join(SCRIPT_DIR, path)
