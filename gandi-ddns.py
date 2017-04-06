@@ -41,26 +41,14 @@ def get_record(url, headers):
 
         return r
 
-def add_record(url, headers, payload):
+def update_record(url, headers, payload):
         #Add record
-        r = requests.post(url, headers=headers, json=payload)
+        r = requests.put(url, headers=headers, json=payload)
         if r.status_code != 201:
-          print('Record addition failed with status code: %d' % r.status_code)
+          print('Record update failed with status code: %d' % r.status_code)
           print(r.text)
           sys.exit(2)
-        print ('Zone record added.')
-
-        return r
-
-
-def del_record(url, headers):
-        #Delete record
-        r = requests.delete(url, headers=headers)
-        if r.status_code != 204:
-          print('Record deletion failed with status code: %d' % r.status_code)
-          print(r.text)
-          sys.exit(2)
-        print('Zone record deleted.')
+        print ('Zone record updated.')
 
         return r
 
@@ -91,18 +79,18 @@ def main():
     #Prepare record
     payload = {'rrset_ttl': config.get(section, 'ttl'), 'rrset_values': [external_ip]}
 
-    #Check if record already exists. If not, add record. If it does, delete then add record.
+    #Check current record
     record = get_record(url, headers)
 
-    if record.status_code == 404:
-      add_record(url, headers, payload)
-    elif record.status_code == 200:
+    if record.status_code == 200:
       print('Current record value is: %s' % json.loads(record.text)['rrset_values'][0])
       if(json.loads(record.text)['rrset_values'][0] == external_ip):
         print('No change in IP address. Goodbye.')
         sys.exit()
-      del_record(url, headers)
-      add_record(url, headers, payload)
+    else:
+      print('No existing record. Adding...')
+
+    update_record(url, headers, payload)
 
 if __name__ == "__main__":
   main()
