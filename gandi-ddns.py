@@ -13,7 +13,7 @@ def get_ip():
         #Get external IP
         try:
           # Could be any service that just gives us a simple raw ASCII IP address (not HTML etc)
-          r = requests.get("http://ipv4.myexternalip.com/raw", timeout=3)
+          r = requests.get('http://ipv4.myexternalip.com/raw', timeout=3)
         except Exception:
           print('Unable to retrieve external IP address.')
           sys.exit(2)
@@ -76,20 +76,20 @@ def main():
   for section in config.sections():
   
     #Retrieve API key
-    apikey = config.get(section, "apikey")
+    apikey = config.get(section, 'apikey')
 
     #Set headers
-    headers = { 'Content-Type': 'application/json', 'X-Api-Key': '%s' % config.get(section, "apikey")}
+    headers = { 'Content-Type': 'application/json', 'X-Api-Key': '%s' % config.get(section, 'apikey')}
 
     #Set URL
-    url = '%sdomains/%s/records/%s/A' % (config.get(section, "api"), config.get(section, "domain"), config.get(section, "a_name"))
+    url = '%sdomains/%s/records/%s/A' % (config.get(section, 'api'), config.get(section, 'domain'), config.get(section, 'a_name'))
     print(url)
     #Discover External IP
     external_ip = get_ip()
-    print("external IP is: %s" % external_ip)
+    print('external IP is: %s' % external_ip)
 
     #Prepare record
-    payload = {'rrset_ttl': config.get(section, "ttl"), 'rrset_values': [external_ip]}
+    payload = {'rrset_ttl': config.get(section, 'ttl'), 'rrset_values': [external_ip]}
 
     #Check if record already exists. If not, add record. If it does, delete then add record.
     record = get_record(url, headers)
@@ -97,10 +97,10 @@ def main():
     if record.status_code == 404:
       add_record(url, headers, payload)
     elif record.status_code == 200:
-      print("current record is: %s" % json.loads(record.text)['rrset_values'][0])
+      print('current record is: %s' % json.loads(record.text)['rrset_values'][0])
       if(json.loads(record.text)['rrset_values'][0] == external_ip):
-        print("no change in IP address")
-        sys.exit(2)
+        print('No change in IP address')
+        sys.exit()
       del_record(url, headers)
       add_record(url, headers, payload)
 
