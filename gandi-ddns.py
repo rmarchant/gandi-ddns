@@ -57,10 +57,10 @@ def del_record(url, headers):
         #Delete record
         r = requests.delete(url, headers=headers)
         if r.status_code != 204:
-          print('Record delete failed with status code: %d' % r.status_code)
+          print('Record deletion failed with status code: %d' % r.status_code)
           print(r.text)
           sys.exit(2)
-        print('Record delete succeeded')
+        print('Zone record deleted.')
 
         return r
 
