@@ -3,6 +3,7 @@ import sys
 import os
 import requests
 import json
+import ipaddress
 
 config_file = "config.txt"
 
@@ -20,7 +21,12 @@ def get_ip():
           print('Failed to retrieve external IP. Server responded with status_code: %d' % result.status_code)
           sys.exit(2)
 
-        return r.text
+        ip = r.text.rstrip() # strip \n and any trailing whitespace
+
+	if not(ipaddress.IPv4Address(ip)): # check if valid IPv4 address
+          sys.exit(2)
+
+        return ip
 
 def read_config(config_path):
         #Read configuration file
@@ -79,7 +85,7 @@ def main():
     url = '%sdomains/%s/records/%s/A' % (config.get(section, "api"), config.get(section, "domain"), config.get(section, "a_name"))
     print(url)
     #Discover External IP
-    external_ip = get_ip()[0:-1]
+    external_ip = get_ip()
     print("external IP is: %s" % external_ip)
 
     #Prepare record
