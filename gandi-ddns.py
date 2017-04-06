@@ -15,7 +15,7 @@ def get_ip():
           # Could be any service that just gives us a simple raw ASCII IP address (not HTML etc)
           r = requests.get('http://ipv4.myexternalip.com/raw', timeout=3)
         except Exception:
-          print('Unable to retrieve external IP address.')
+          print('Failed to retrieve external IP.')
           sys.exit(2)
 	if r.status_code != 200:
           print('Failed to retrieve external IP. Server responded with status_code: %d' % result.status_code)
@@ -45,10 +45,10 @@ def add_record(url, headers, payload):
         #Add record
         r = requests.post(url, headers=headers, json=payload)
         if r.status_code != 201:
-          print('Record update failed with status code: %d' % r.status_code)
+          print('Record addition failed with status code: %d' % r.status_code)
           print(r.text)
           sys.exit(2)
-        print r.text
+        print ('Zone record added.')
 
         return r
 
@@ -71,7 +71,7 @@ def main():
     path = os.path.join(SCRIPT_DIR, path)
   config = read_config(path)
   if not config:
-    sys.exit("please fill in the 'config.txt' file")
+    sys.exit("Please fill in the 'config.txt' file.")
 
   for section in config.sections():
   
@@ -86,7 +86,7 @@ def main():
     print(url)
     #Discover External IP
     external_ip = get_ip()
-    print('external IP is: %s' % external_ip)
+    print('External IP is: %s' % external_ip)
 
     #Prepare record
     payload = {'rrset_ttl': config.get(section, 'ttl'), 'rrset_values': [external_ip]}
@@ -97,9 +97,9 @@ def main():
     if record.status_code == 404:
       add_record(url, headers, payload)
     elif record.status_code == 200:
-      print('current record is: %s' % json.loads(record.text)['rrset_values'][0])
+      print('Current record value is: %s' % json.loads(record.text)['rrset_values'][0])
       if(json.loads(record.text)['rrset_values'][0] == external_ip):
-        print('No change in IP address')
+        print('No change in IP address. Goodbye.')
         sys.exit()
       del_record(url, headers)
       add_record(url, headers, payload)
