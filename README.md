@@ -1,11 +1,19 @@
-Simple Python script to update DNS A record of your domain dynamically using gandi.net LiveDNS API:
+Python script to update DNS A record of your domain dynamically using gandi.net LiveDNS API:
 
 http://doc.livedns.gandi.net/
 
+The script was developed for those behind a dynamic IP interface (e.g. home server/pi/nas).
+
 The config-template.txt file should be renamed to config.txt, and modified with your gandi.net API key, domain name, and A-record (@, dev, home, pi, etc).
 
-Every time the script runs, it will query an external service to retrieve the external IP of the machine, compare it to the current record (if any) in the zone at gandi.net, and then add a new record (if none currently exists), or delete then add a new record (if a record already exists).
+Every time the script runs, it will query an external service to retrieve the external IP of the machine, compare it to the current A record (if any) in the zone at gandi.net, and then add a new record (if no record currently exists), or delete then add a new record (if a record already exists).
 
 Requirements:
   - Python 2.7
   - ipaddress module (pip install ipaddress)
+
+You can then run the script as a cron job :
+
+```
+*/15 * * * * python /home/user/gandi-ddns.py
+```
