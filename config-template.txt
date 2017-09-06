@@ -13,4 +13,4 @@ a_name = raspbian
 ttl = 900
 
 # Production API
-api = https://dns.beta.gandi.net/api/v5/
+api = https://dns.api.gandi.net/api/v5/
