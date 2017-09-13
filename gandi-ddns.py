@@ -18,7 +18,7 @@ def get_ip():
           print('Failed to retrieve external IP.')
           sys.exit(2)
 	if r.status_code != 200:
-          print('Failed to retrieve external IP. Server responded with status_code: %d' % result.status_code)
+          print('Failed to retrieve external IP. Server responded with status_code: %d' % r.status_code)
           sys.exit(2)
 
         ip = r.text.rstrip() # strip \n and any trailing whitespace
