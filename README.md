@@ -11,6 +11,8 @@ Every time the script runs, it will query an external service to retrieve the ex
 Requirements:
   - Python 2.7
   - ipaddress module (pip install ipaddress)
+  - requests module (pip install requests)
+  - json module (pip install json)
 
 You can then run the script as a cron job :
 
