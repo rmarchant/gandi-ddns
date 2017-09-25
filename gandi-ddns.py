@@ -13,7 +13,7 @@ def get_ip():
         #Get external IP
         try:
           # Could be any service that just gives us a simple raw ASCII IP address (not HTML etc)
-          r = requests.get('http://ipv4.myexternalip.com/raw', timeout=3)
+          r = requests.get('https://api.ipify.org', timeout=3)
         except Exception:
           print('Failed to retrieve external IP.')
           sys.exit(2)
