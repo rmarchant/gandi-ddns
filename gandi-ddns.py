@@ -4,6 +4,7 @@ import os
 import requests
 import json
 import ipaddress
+from datetime import datetime
 
 config_file = "config.txt"
 
@@ -62,6 +63,7 @@ def main():
     sys.exit("Please fill in the 'config.txt' file.")
 
   for section in config.sections():
+    print('%s - section %s' % (str(datetime.now()), section))
 
     #Retrieve API key
     apikey = config.get(section, 'apikey')
