@@ -19,3 +19,12 @@ You can then run the script as a cron job :
 ```
 */15 * * * * python /home/user/gandi-ddns.py
 ```
+
+macOS
+
+```
+cd gandi-ddns
+ln -s $(pwd) /usr/local/gandi-ddns
+sudo cp gandi.ddns.plist /Library/LaunchDaemons/
+sudo launchctl /Library/LaunchDaemons/gandi.ddns.plist
+```
