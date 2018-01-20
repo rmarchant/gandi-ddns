@@ -4,6 +4,7 @@ import os
 import requests
 import json
 import ipaddress
+from datetime import datetime
 
 config_file = "config.txt"
 
@@ -62,7 +63,8 @@ def main():
     sys.exit("Please fill in the 'config.txt' file.")
 
   for section in config.sections():
-  
+    print('%s - section %s' % (str(datetime.now()), section))
+
     #Retrieve API key
     apikey = config.get(section, 'apikey')
 
@@ -86,7 +88,7 @@ def main():
       print(('Current record value is: %s' % json.loads(record.text)['rrset_values'][0]))
       if(json.loads(record.text)['rrset_values'][0] == external_ip):
         print('No change in IP address. Goodbye.')
-        sys.exit()
+        continue
     else:
       print('No existing record. Adding...')
 
