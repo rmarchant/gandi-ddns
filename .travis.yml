@@ -4,6 +4,9 @@
   "install": [
     "pip install -r requirements.txt"
   ],
+  "script": [
+    "pytest"
+  ],
   "group": "stable",
   "dist": "trusty",
   "os": "linux"
