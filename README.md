@@ -8,15 +8,14 @@ The config-template.txt file should be renamed to config.txt, and modified with 
 
 Every time the script runs, it will query an external service to retrieve the external IP of the machine, compare it to the current A record in the zone at gandi.net, and then update the record if the IP has changed.
 
-Requirements:
-  - ipaddress module (pip install ipaddress)
-  - requests module (pip install requests)
-  - json module (pip install json)
+Requirements: 
+
+  pip install -r requirements.txt
 
 You can then run the script as a cron job :
 
 ```
-*/15 * * * * python /home/user/gandi-ddns.py
+*/15 * * * * python /home/user/gandi_ddns.py
 ```
 
 macOS

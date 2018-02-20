@@ -7,7 +7,7 @@
   <key>ProgramArguments</key>
   <array>
     <string>/usr/local/bin/python3</string>
-    <string>gandi-ddns.py</string>
+    <string>gandi_ddns.py</string>
   </array>
 
   <key>RunAtLoad</key>
