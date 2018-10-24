@@ -5,29 +5,54 @@ import requests
 import json
 import ipaddress
 from datetime import datetime
+import time
 
 config_file = "config.txt"
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
+DEFAULT_RETRIES = 3
 
-def get_ip():
+
+class GandiDdnsError(Exception):
+        pass
+
+
+def get_ip_inner():
         #Get external IP
         try:
-          # Could be any service that just gives us a simple raw ASCII IP address (not HTML etc)
-          r = requests.get('https://api.ipify.org', timeout=3)
-        except Exception:
-          print('Failed to retrieve external IP.')
-          sys.exit(2)
+                # Could be any service that just gives us a simple raw ASCII IP address (not HTML etc)
+                r = requests.get('https://api.ipify.org', timeout=3)
+        except requests.exceptions.RequestException:
+                raise GandiDdnsError('Failed to retrieve external IP.')
         if r.status_code != 200:
-          print(('Failed to retrieve external IP. Server responded with status_code: %d' % r.status_code))
-          sys.exit(2)
+                raise GandiDdnsError(
+                        'Failed to retrieve external IP.'
+                        ' Server responded with status_code: %d' % r.status_code)
 
         ip = r.text.rstrip() # strip \n and any trailing whitespace
 
         if not(ipaddress.IPv4Address(ip)): # check if valid IPv4 address
-          sys.exit(2)
+                raise GandiDdnsError('Got invalid IP: ' + ip)
 
         return ip
+
+
+def get_ip(retries):
+        #Get external IP with retries
+
+        # Start at 5 seconds, double on every retry.
+        retry_delay_time = 5
+        for attempt in range(retries):
+                try:
+                        return get_ip_inner()
+                except GandiDdnsError as e:
+                        print('Getting external IP failed: %s' % e)
+                print('Waiting for %d seconds before trying again' % retry_delay_time)
+                time.sleep(retry_delay_time)
+                # Double retry time, cap at 60s.
+                retry_delay_time = min(60, 2 * retry_delay_time)
+        print('Exhausted retry attempts')
+        sys.exit(2)
 
 def read_config(config_path):
         #Read configuration file
@@ -75,7 +100,8 @@ def main():
     url = '%sdomains/%s/records/%s/A' % (config.get(section, 'api'), config.get(section, 'domain'), config.get(section, 'a_name'))
     print(url)
     #Discover External IP
-    external_ip = get_ip()
+    retries = config.get(section, 'retries', fallback=DEFAULT_RETRIES)
+    external_ip = get_ip(retries)
     print(('External IP is: %s' % external_ip))
 
     #Prepare record
