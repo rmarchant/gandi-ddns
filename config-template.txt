@@ -14,3 +14,7 @@ ttl = 900
 
 # Production API
 api = https://dns.api.gandi.net/api/v5/
+
+# Number of retries for looking up our own IP address, since
+# the service seems to be flaky sometimes.
+retries = 3

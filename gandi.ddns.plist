@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>gandi.ddns</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/local/bin/python3</string>
+    <string>gandi_ddns.py</string>
+  </array>
+
+  <key>RunAtLoad</key>
+  <true/>
+
+  <key>StartInterval</key>
+  <integer>300</integer> <!-- every 5 mins -->
+
+  <key>KeepAlive</key>
+  <false/>
+
+  <key>WorkingDirectory</key>
+  <string>/usr/local/gandi-ddns/</string>
+
+  <key>StandardErrorPath</key>
+  <string>/usr/local/var/log/gandi-ddns/output.log</string>
+  <key>StandardOutPath</key>
+  <string>/usr/local/var/log/gandi-ddns/output.log</string>
+</dict>
+</plist>
