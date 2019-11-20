@@ -21,7 +21,7 @@ You can then run the script as a cron job :
 But to be nice to the API servers, you should choose a random offset for your job. For example to run at 2 minutes after the hour, and then every 15 minutes :
 
 ```
-2-59/15 * * * * pythong /home/user/gandi-ddns.py
+2-59/15 * * * * python /home/user/gandi-ddns.py
 ```
 
 macOS
