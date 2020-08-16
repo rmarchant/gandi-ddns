@@ -7,14 +7,15 @@ domain = example.com
 
 # A-record name (@, dev, home, etc) that will be updated
 # example is for raspbian.example.com
-a_name = raspbian 
+a_name = raspbian
 
 # TTL (seconds)
 ttl = 900
 
 # Production API
-api = https://dns.api.gandi.net/api/v5/
+gandi_api = https://dns.api.gandi.net/api/v5/
 
 # Number of retries for looking up our own IP address, since
 # the service seems to be flaky sometimes.
 retries = 3
+ipify_api = https://api.ipify.org
