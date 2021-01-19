@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Git branch or tag to build
+        required: true
+
+jobs:
+  docker:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        include:
+          - gandi_ddns: 1.0.0
+            alpine: 3.13.0
+            tags: 1.0.0-alpine3.13.0,1.0.0,1.0,1
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ilteoood/docker_buildx@1.1.0
+        with:
+          tag: ${{ matrix.tags }}
+          imageName: cjyar/gandi-ddns
+          buildArg: ALPINE_VERSION=${{ matrix.alpine }},GANDI_DDNS_VERSION=${{ matrix.gandi_ddns }}
+          publish: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/master') || github.event_name == 'workflow_dispatch' }}
+          dockerUser: cjyar
+          dockerPassword: ${{ secrets.DOCKER_PASSWORD }}

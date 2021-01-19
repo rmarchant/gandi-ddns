@@ -85,6 +85,8 @@ def update_record(url, headers, payload):
 
 def main():
     path = config_file
+    if len(sys.argv) > 1:
+        path = sys.argv[1]
     if not path.startswith('/'):
         path = os.path.join(SCRIPT_DIR, path)
     config = read_config(path)
