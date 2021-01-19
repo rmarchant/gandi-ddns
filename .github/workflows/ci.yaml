@@ -25,8 +25,8 @@ jobs:
       - uses: ilteoood/docker_buildx@1.1.0
         with:
           tag: ${{ matrix.tags }}
-          imageName: cjyar/gandi-ddns
+          imageName: rmarchent/gandi-ddns
           buildArg: ALPINE_VERSION=${{ matrix.alpine }},GANDI_DDNS_VERSION=${{ matrix.gandi_ddns }}
           publish: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/master') || github.event_name == 'workflow_dispatch' }}
-          dockerUser: cjyar
+          dockerUser: rmarchent
           dockerPassword: ${{ secrets.DOCKER_PASSWORD }}
