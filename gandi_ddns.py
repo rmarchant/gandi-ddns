@@ -98,7 +98,7 @@ def main():
         apikey = config.get(section, 'apikey')
 
         # Set headers
-        headers = {'Content-Type': 'application/json', 'X-Api-Key': '%s' % apikey}
+        headers = {'Content-Type': 'application/json', 'Authorization': 'Apikey %s' % apikey}
 
         # Set URL
         url = '%sdomains/%s/records/%s/A' % (config.get(section, 'gandi_api'),
