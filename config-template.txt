@@ -13,7 +13,7 @@ a_name = raspbian
 ttl = 900
 
 # Production API
-gandi_api = https://dns.api.gandi.net/api/v5/
+gandi_api = https://api.gandi.net/v5/livedns/
 
 # Number of retries for looking up our own IP address, since
 # the service seems to be flaky sometimes.
