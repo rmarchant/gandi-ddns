@@ -1,6 +1,6 @@
 Python script to update DNS A record of your domain dynamically using gandi.net LiveDNS API:
 
-http://doc.livedns.gandi.net/
+https://api.gandi.net/docs/livedns/
 
 The script was developed for those behind a dynamic IP interface (e.g. home server/pi/nas).
 
