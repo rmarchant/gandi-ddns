@@ -24,7 +24,7 @@ But to be nice to the API servers, you should choose a random offset for your jo
 2-59/15 * * * * python /home/user/gandi-ddns.py
 ```
 
-macOS
+# macOS
 
 ```
 cd gandi-ddns
@@ -32,3 +32,15 @@ ln -s $(pwd) /usr/local/gandi-ddns
 sudo cp gandi.ddns.plist /Library/LaunchDaemons/
 sudo launchctl /Library/LaunchDaemons/gandi.ddns.plist
 ```
+
+# Docker
+
+The docker container is published as [`rmarchant/gandi-ddns`](https://hub.docker.com/r/rmarchant/gandi-ddns). To run,
+pass it an argument pointing to the config file. The config file must be mounted into the container's filesystem.
+
+```
+docker run -it --rm -v /path/to/config/file.txt:/config.txt rmarchant/gandi-ddns /config.txt
+```
+
+If you're on Kubernetes, you can create a
+[CronJob](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/) to run this periodically.
